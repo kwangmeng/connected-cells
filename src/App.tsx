@@ -90,7 +90,7 @@ class App extends React.Component<{},IMyState> {
       
       return(
         <div key={index} style={{padding:10,border:"solid 1px black",textAlign:"center",background:item===1?"red":"white",color:item===1?"white":"black"}}>
-        <select value={item} onChange={this.handleChange.bind(this,i,index)}>
+        <select value={item} className="form-control" onChange={this.handleChange.bind(this,i,index)}>
           <option value={0}>0</option>
           <option value={1}>1</option>
         </select>
@@ -212,16 +212,50 @@ class App extends React.Component<{},IMyState> {
    
   }
 
+  public handleOnClick = () =>{
+    const {row,column} = this.state;
+    this.setState({
+      matrix: Array(row).fill(0).map(innerrow => new Array(column).fill(0)),
+      visited:Array(row).fill(0).map(innerrow => new Array(column).fill(false)),  
+    },()=>{
+      this.generateCells();
+    })
+
+  }
+
   public render() {
     const {row,column,max} = this.state;
     return (
-      <div className="container-fluid">
+      <div className="container-fluid" style={{padding:15}}>
           <br/>
-          <h6>Row: <input type="number" value={row} style={{width:50}} onChange={this.handleRowChange}/> , Column: <input type="number" value={column} style={{width:50}} onChange={this.handleColChange}/></h6>
+          <div className="text-center">
+          <h5>Simple Interface for Connected Cells</h5>
+          </div>
+          <br/>
+          <div style={{border:"dashed black 2px",padding:10}}>
+          <div className="row justify-content-center">
+          <form className="form-inline"> 
+          Row: &nbsp;&nbsp;<input type="number" className='form-control' value={row} style={{width:"35%"}} onChange={this.handleRowChange}/> &nbsp; Column:&nbsp;&nbsp; <input type="number" value={column} style={{width:"35%"}} className='form-control' onChange={this.handleColChange}/>
+          </form>
+          </div>
           <br/>
           {this.renderRowLayout()}
           <br/>
-          <h4>The largest region contains {max} cell(s)</h4>
+          <div className="text-center">
+          <h4>The largest region contains <span style={{borderBottom: "double 3px",borderBottomColor:"red",fontSize:30,fontWeight:600}}>{max}</span> cell(s)</h4>
+          <br />
+          <button className="btn btn-lg btn-primary" onClick={this.handleOnClick}>Regenerate New Cells</button>
+          </div>
+
+          </div>
+
+          <div>
+            <br />
+              <h6>Remarks:</h6>
+              <p>This site is made using create-react-app boilerplate, uses typescript as main language. </p>
+              <p>Bootstrap 4 is added as main UI framework.</p>
+          </div>
+
       </div>
     );
   }
